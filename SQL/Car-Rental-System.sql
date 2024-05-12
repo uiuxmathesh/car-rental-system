@@ -12,12 +12,14 @@ CREATE TABLE [vehicle] (
   [make] varchar(255),
   [model] varchar(255),
   [year] varchar(4),
-  [dailyrate] decimal(10,2),
+  [dailyrate] float,
   [status] varchar(255) NOT NULL CHECK ([status] IN ('available','unavailable')),
   [passengercapacity] int,
   [enginecapacity] int,
   CONSTRAINT vehicle_pk PRIMARY KEY ([vehicleID])
 );
+
+
 
 
 IF OBJECT_ID(N'customer') IS NULL
@@ -27,6 +29,7 @@ CREATE TABLE [customer] (
   [lastname] varchar(255),
   [email] varchar(255),
   [phoneNumber] varchar(255),
+  CONSTRAINT customer_uk UNIQUE([email],[phoneNumber]),
   CONSTRAINT customer_pk PRIMARY KEY ([customerID])
 );
 
@@ -38,7 +41,7 @@ CREATE TABLE [lease] (
   [customerID] int,
   [startDate] date,
   [endDate] date,
-  [type] int NOT NULL CHECK ([type] IN ('Daily','Monthly')),
+  [type] varchar(255) NOT NULL CHECK ([type] IN ('Daily','Monthly')),
   CONSTRAINT lease_pk PRIMARY KEY ([leaseID]),
   CONSTRAINT lease_vehicle_fk FOREIGN KEY([vehicleID]) REFERENCES vehicle([vehicleID]),
   CONSTRAINT lease_customer_fk FOREIGN KEY([customerID]) REFERENCES customer([customerID])
@@ -54,12 +57,3 @@ CREATE TABLE [payment] (
   CONSTRAINT payment_lease_fk FOREIGN KEY([leaseID]) REFERENCES lease([leaseID])
 
 );
-
---INSERT INTO [vehicle] ([make],[model],[year],[dailyrate],[status],[passengercapacity],[enginecapacity])
---VALUES ('Suzuki','Ignis','2023',200.50, 'unknown',5, 400)
-
-
-
-SELECT * FROM sys.tables
-
---DROP DATABASE [CarRentalSystem]
