@@ -17,7 +17,10 @@ class Vehicle:
 
     @id.setter
     def  id(self,id):
-        self._id = id
+        if isinstance(id, int) and id > 0:
+            self._id = id
+        else:
+            raise ValueError("ID should be a positive integer")
 
     @property
     def make(self):
@@ -25,7 +28,10 @@ class Vehicle:
     
     @make.setter
     def make(self, make):
-        self._make = make
+        if len(make) > 0:
+            self._make = make
+        else:
+            raise ValueError("Make should not be empty")
 
     @property
     def model(self):
@@ -33,7 +39,10 @@ class Vehicle:
     
     @model.setter
     def model(self,model):
-        self._model = model
+        if len(model) > 0:
+            self._model = model
+        else:
+            raise ValueError("Model should not be empty")
 
     @property
     def year(self):
@@ -41,7 +50,10 @@ class Vehicle:
 
     @year.setter
     def year(self,year):
-        self._year = year 
+        if len(year) == 4:
+            self._year = year
+        else:
+            raise ValueError("Year should be in YYYY format") 
 
     @property
     def dailyrate(self):
@@ -49,7 +61,10 @@ class Vehicle:
     
     @dailyrate.setter
     def dailyrate(self,dailyrate):
-        self._dailyrate = dailyrate
+        if dailyrate > 0:
+            self._dailyrate = dailyrate
+        else:
+            raise ValueError("Daily rate should be a positive number")
     
     @property
     def status(self):
@@ -57,7 +72,10 @@ class Vehicle:
     
     @status.setter
     def status(self,status):
-        self._status = status
+        if status in ['Available','Unavailable']:
+            self._status = status
+        else:
+            raise ValueError("Status should be either Available or Unavailable")
 
     @property
     def passengerCapacity(self):
@@ -65,7 +83,10 @@ class Vehicle:
     
     @passengerCapacity.setter
     def passengerCapacity(self,passesngerCapacity):
-        self._passengerCapacity = passesngerCapacity
+        if passesngerCapacity > 4:
+            self._passengerCapacity = passesngerCapacity
+        else:
+            raise ValueError("Passenger capacity should be greater than 4")
     
     @property
     def engineCapacity(self):
@@ -73,23 +94,13 @@ class Vehicle:
     
     @engineCapacity.setter
     def engineCapacity(self,engineCapacity):
-        self._engineCapacity= engineCapacity
+        if engineCapacity > 0:
+            self._engineCapacity = engineCapacity
+        else:
+            raise ValueError("Engine capacity should be a positive number")
+        
 
     def __str__(self) -> str:
         return f"Vehicle [id={self.id}, make={self.make}, model={self.model}, year={self.year}, dailyrate={self.dailyrate}, status={self.status}, passengerCapacity={self.passengerCapacity}, engineCapacity={self.engineCapacity}]"
 
-# v1 = Vehicle()
-# v1.id = 1
-# print(v1.id)
-# v1.make ='Honda'
-# print(v1.make)
-# v1.model = 'Amaze'
-# print(v1.model)
-# v1.dailyrate = 200
-# print(v1.dailyrate)
-# v1.status = 'Available'
-# print(v1.status)
-# v1.engineCapacity = 400
-# print(v1.engineCapacity)
-# v1.passengerCapacity = 5
-# print(v1.passengerCapacity)
+

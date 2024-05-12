@@ -15,7 +15,10 @@ class Customer:
     
     @id.setter
     def id(self, id):
-        self._id = id
+        if isinstance(id, int) and id > 0:
+            self._id = id
+        else:
+            raise ValueError("ID should be a positive integer")
     
     @property
     def firstname(self):
@@ -23,7 +26,10 @@ class Customer:
     
     @firstname.setter
     def firstname(self, firstname):
-        self._firstname = firstname
+        if len(firstname) > 0:
+            self._firstname = firstname
+        else:
+            raise ValueError("First Name should not be empty")
 
     @property
     def lastname(self):
@@ -31,7 +37,10 @@ class Customer:
     
     @lastname.setter
     def lastname(self, lastname):
-        self._lastname = lastname
+        if len(lastname) > 0:
+            self._lastname = lastname
+        else:
+            raise ValueError("Last Name should not be empty")
     
     @property
     def email(self):
@@ -39,7 +48,10 @@ class Customer:
     
     @email.setter
     def email(self, email):
-        self._email = email
+        if len(email) > 0:
+            self._email = email
+        else:
+            raise ValueError("Email should not be empty")
 
     @property
     def phoneNumber(self):
@@ -47,8 +59,12 @@ class Customer:
     
     @phoneNumber.setter
     def phoneNumber(self, phoneNumber):
-        self._phoneNumber = phoneNumber
+        if len(phoneNumber) == 10:
+            self._phoneNumber = phoneNumber
+        else:
+            raise ValueError("Phone Number should be 10 digits")
 
     def __str__(self) -> str:
         return f"Customer [id={self.id}, firstname={self.firstname}, lastname={self.lastname}, email={self.email}, phoneNumber={self.phoneNumber}]"
     
+c1 = Customer()

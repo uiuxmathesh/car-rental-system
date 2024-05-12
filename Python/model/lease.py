@@ -1,4 +1,4 @@
-
+from datetime import datetime
 class Lease:
 
     def __init__(self) -> None:
@@ -15,7 +15,10 @@ class Lease:
     
     @id.setter
     def id(self, id):
-        self._id = id
+        if isinstance(id, int) and id > 0:
+            self._id = id
+        else:
+            raise ValueError("ID should be a positive integer")
     
     @property
     def vehicleId(self):
@@ -23,7 +26,10 @@ class Lease:
     
     @vehicleId.setter
     def vehicleId(self, vehicleId):
-        self._vehicleId = vehicleId
+        if isinstance(vehicleId, int) and vehicleId > 0:
+            self._vehicleId = vehicleId 
+        else:
+            raise ValueError("Vehicle ID should be a positive integer")
 
     @property
     def customerId(self):
@@ -31,7 +37,10 @@ class Lease:
     
     @customerId.setter
     def customerId(self, customerId):
-        self._customerId = customerId
+        if isinstance(customerId, int) and customerId > 0:
+            self._customerId = customerId
+        else:
+            raise ValueError("Customer ID should be a positive integer")
 
     @property
     def startDate(self):
@@ -39,6 +48,7 @@ class Lease:
     
     @startDate.setter
     def startDate(self, startDate):
+        startDate = str(datetime.strptime(startDate, "%Y-%m-%d"))
         self._startDate = startDate
 
     @property
@@ -47,6 +57,7 @@ class Lease:
     
     @endDate.setter
     def endDate(self, endDate):
+        endDate = str(datetime.strptime(endDate, "%Y-%m-%d"))
         self._endDate = endDate
 
     @property
@@ -55,6 +66,11 @@ class Lease:
     
     @type.setter
     def type(self, type):
-        self._type = type
+        if type in ["Daily", "Monthly"]:  
+            self._type = type
+        else:
+            raise ValueError("Type should be Daily or Monthly")
 
+    def __str__(self) -> str:
+        return f"Lease [id={self.id}, vehicleId={self.vehicleId}, customerId={self.customerId}, startDate={self.startDate}, endDate={self.endDate}, type={self.type}]"
     
