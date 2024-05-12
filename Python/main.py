@@ -155,7 +155,6 @@ def main():
                     try:
                         print("Customer Entry")
                         print()
-                        customer.id = int(input("Enter Customer ID: "))
                         customer.firstname = input("Enter Customer First Name: ")
                         customer.lastname = input("Enter Customer Last Name: ")
                         customer.email = input("Enter Customer Email: ")
@@ -360,4 +359,6 @@ if __name__ == "__main__":
 ░╚═══██╗░░╚██╔╝░░░╚═══██╗░░░██║░░░██╔══╝░░██║╚██╔╝██║
 ██████╔╝░░░██║░░░██████╔╝░░░██║░░░███████╗██║░╚═╝░██║
 ╚═════╝░░░░╚═╝░░░╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░░░░╚═╝""")
+    
+
     main()
