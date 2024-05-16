@@ -14,3 +14,8 @@ class LeaseNotFoundException(Exception):
         message = f"Lease with ID {id} not found"
         super().__init__(message)
 
+## My Exception
+class CarNotAvailableException(Exception):
+    def __init__(self, id:int):
+        message = f"Car with ID {id} is not available"
+        super().__init__(message)
