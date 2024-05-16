@@ -72,7 +72,9 @@ class Vehicle:
     
     @status.setter
     def status(self,status):
-        if status in ['Available','Unavailable']:
+        if not isinstance(status,str):
+            raise ValueError("Status should be a string")
+        if status.capitalize() in ['Available','Unavailable']:
             self._status = status
         else:
             raise ValueError("Status should be either Available or Unavailable")

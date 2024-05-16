@@ -48,7 +48,7 @@ class Lease:
     
     @startDate.setter
     def startDate(self, startDate):
-        startDate = str(datetime.strptime(startDate, "%Y-%m-%d"))
+        startDate = str(datetime.strptime(startDate, "%Y-%m-%d").date())
         self._startDate = startDate
 
     @property
@@ -57,7 +57,7 @@ class Lease:
     
     @endDate.setter
     def endDate(self, endDate):
-        endDate = str(datetime.strptime(endDate, "%Y-%m-%d"))
+        endDate = str(datetime.strptime(endDate, "%Y-%m-%d").date())
         self._endDate = endDate
 
     @property

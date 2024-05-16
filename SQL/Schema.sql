@@ -13,7 +13,7 @@ CREATE TABLE [vehicle] (
   [model] varchar(255),
   [year] varchar(4),
   [dailyrate] float,
-  [status] varchar(255) NOT NULL CHECK ([status] IN ('available','unavailable')),
+  [status] varchar(255) NOT NULL CHECK ([status] IN ('Available','Unavailable')),
   [passengercapacity] int,
   [enginecapacity] int,
   CONSTRAINT vehicle_pk PRIMARY KEY ([vehicleID])
@@ -43,8 +43,8 @@ CREATE TABLE [lease] (
   [endDate] date,
   [type] varchar(255) NOT NULL CHECK ([type] IN ('Daily','Monthly')),
   CONSTRAINT lease_pk PRIMARY KEY ([leaseID]),
-  CONSTRAINT lease_vehicle_fk FOREIGN KEY([vehicleID]) REFERENCES vehicle([vehicleID]),
-  CONSTRAINT lease_customer_fk FOREIGN KEY([customerID]) REFERENCES customer([customerID])
+  CONSTRAINT lease_vehicle_fk FOREIGN KEY([vehicleID]) REFERENCES vehicle([vehicleID]) ON DELETE CASCADE,
+  CONSTRAINT lease_customer_fk FOREIGN KEY([customerID]) REFERENCES customer([customerID]) ON DELETE CASCADE
 );
 
 IF OBJECT_ID(N'payment') IS NULL
@@ -54,6 +54,6 @@ CREATE TABLE [payment] (
   [paymentDate] date,
   [amount] float,
   CONSTRAINT payment_pk PRIMARY KEY ([paymentID]),
-  CONSTRAINT payment_lease_fk FOREIGN KEY([leaseID]) REFERENCES lease([leaseID])
+  CONSTRAINT payment_lease_fk FOREIGN KEY([leaseID]) REFERENCES lease([leaseID]) ON DELETE SET NULL
 
 );

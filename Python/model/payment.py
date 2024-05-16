@@ -47,7 +47,7 @@ class Payment:
     
     @paymentDate.setter
     def paymentDate(self, paymentDate):
-        paymentDate = str(datetime.strptime(paymentDate, "%Y-%m-%d"))
+        paymentDate = str(datetime.strptime(paymentDate, "%Y-%m-%d").date())
         self._paymentDate = paymentDate
 
     def __str__(self) -> str:
