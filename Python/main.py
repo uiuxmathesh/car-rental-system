@@ -63,15 +63,15 @@ class Main:
     def main(self):
         while True:
             self.mainMenu()
-            choice = int(input("Please Select a Option to Continue: "))
-            if choice == 1:
+            choice = input("Please Select a Option to Continue: ")
+            if choice == "1":
                 while True:
                     self.carManagementMenu()
                     print()
-                    option = int(input("Please Select a Option to Continue... "))
+                    option = input("Please Select a Option to Continue... ")
 
                     # Add a car
-                    if option == 1:
+                    if option == "1":
                         car = Vehicle()
                         try:
                             print("Car Entry")
@@ -97,7 +97,7 @@ class Main:
                             print(f"Car details: {car} - Car Added Successfully")
 
                     # Remove a car
-                    elif option == 2:
+                    elif option == "2":
                         car = Vehicle()
                         try:
                             print("Car Removal")
@@ -114,19 +114,19 @@ class Main:
                             print(f"Car-ID: {car.id} - Car Removed Successfully")
 
                     # List available cars
-                    elif option == 3:
+                    elif option == "3":
                         result = self.rentalService.listAvailableCars()
                         table = tabulate(result, headers="firstrow", tablefmt="fancy_grid")
                         print(table)
 
                     # List rented cars
-                    elif option == 4:
+                    elif option == "4":
                         result = self.rentalService.listRentedCars()
                         table = tabulate(result, headers="firstrow", tablefmt="fancy_grid")
                         print(table)
 
                     # Find a car by ID
-                    elif option == 5:
+                    elif option == "5":
                         try:
                             print("Car Search")
                             print()
@@ -144,18 +144,21 @@ class Main:
                             print(table)
 
                     # Back to main menu
-                    elif option == 6:
+                    elif option == "6":
                         break
 
+                    else:
+                        print("Invalid Input")
+
             # Customer Management
-            elif choice == 2:
+            elif choice == "2":
                 while True:
 
                     self.customerManagementMenu()
-                    option = int(input("Please Select a Option to Continue... "))
+                    option = input("Please Select a Option to Continue... ")
 
                     # Add a customer
-                    if option == 1:
+                    if option == "1":
                         customer = Customer()
                         try:
                             print("Customer Entry")
@@ -180,7 +183,7 @@ class Main:
                             )
 
                     # Remove a customer
-                    elif option == 2:
+                    elif option == "2":
                         customer = Customer()
                         try:
                             print("Customer Removal")
@@ -200,13 +203,13 @@ class Main:
                             )
 
                     # List customers
-                    elif option == 3:
+                    elif option == "3":
                         result = self.rentalService.listCustomers()
                         table = tabulate(result, headers="firstrow", tablefmt="fancy_grid")
                         print(table)
 
                     # Find a customer by ID
-                    elif option == 4:
+                    elif option == "4":
                         customer = Customer()
                         try:
                             print("Customer Search")
@@ -224,18 +227,21 @@ class Main:
                             print(table)
 
                     # Back to main menu
-                    elif option == 5:
+                    elif option == "5":
                         break
 
+                    else:
+                        print("Invalid Input")
+
             # Lease Management
-            elif choice == 3:
+            elif choice == "3":
 
                 while True:
                     self.leaseManagementMenu()
-                    option = int(input("Please Select a Option to Continue... "))
+                    option = input("Please Select a Option to Continue... ")
 
                     # Create a lease
-                    if option == 1:
+                    if option == "1":
                         lease = Lease()
                         try:
                             print("Lease Entry")
@@ -257,7 +263,7 @@ class Main:
                             print(f"Lease details: {lease} - Lease Created Successfully")
 
                     # Return a car
-                    elif option == 2:
+                    elif option == "2":
                         lease = Lease()
                         try:
                             print("Car Return")
@@ -276,28 +282,31 @@ class Main:
                             print(f"Lease-ID: {lease.id} - Car Returned Successfully")
 
                     # List active leases
-                    elif option == 3:
+                    elif option == "3":
                         result = self.rentalService.listActiveLeases()
                         table = tabulate(result, headers="firstrow", tablefmt="fancy_grid")
                         print(table)
 
                     # List lease history
-                    elif option == 4:
+                    elif option == "4":
                         result = self.rentalService.listLeaseHistory()
                         table = tabulate(result, headers="firstrow", tablefmt="fancy_grid")
                         print(table)
 
                     # Back to main menu
-                    elif option == 5:
+                    elif option == "5":
                         break
 
-            elif choice == 4:
+                    else:
+                        print("Invalid Input")
+
+            elif choice == "4":
                 while True:
                     self.paymentManagementMenu()
-                    option = int(input("Please Select a Option to Continue... "))
+                    option = input("Please Select a Option to Continue... ")
 
                     # Pay for a lease
-                    if option == 1:
+                    if option == "1":
                         payment = Payment()
                         try:
                             print("Payment Entry")
@@ -318,13 +327,18 @@ class Main:
                             )
 
                     # Back to main menu
-                    elif option == 2:
+                    elif option == "2":
                         break
+                    else:
+                        print("Invalid Input")
 
             # Exit
-            elif choice == 5:
+            elif choice == "5":
                 print("Thank you for using the Car Lease Management System")
                 exit()
+
+            else:
+                print("Invalid Input")
 
 
 if __name__ == "__main__":
