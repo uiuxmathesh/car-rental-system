@@ -79,10 +79,13 @@ class ICarLeaseRepositoryImpl(ICarLeaseRepository):
         self._db_connection.commit()
         
     def removeCustomer(self, customerID:int):
-        query = "DELETE FROM [customer] WHERE [customerId] = ?"
-        values = (customerID,)
-        self._cursor.execute(query, values)
-        self._db_connection.commit()
+        if len(self.findCustomerByID(customerID)) == 1:
+            raise CustomerNotFoundException(customerID)
+        else:
+            query = "DELETE FROM [customer] WHERE [customerId] = ?"
+            values = (customerID,)
+            self._cursor.execute(query, values)
+            self._db_connection.commit()
         
     def listCustomers(self) -> list:
         query = "SELECT * FROM [customer]"
@@ -106,10 +109,10 @@ class ICarLeaseRepositoryImpl(ICarLeaseRepository):
     
     def createLease(self, lease:Lease) -> None:
         vehicleData = self.findCarByID(lease.vehicleId)
+        customerData = self.findCustomerByID(lease.customerId)
 
         if vehicleData[1][5] != 'Available':
-            raise CarNotAvailableException(lease.vehicleId)
-        
+            raise CarNotAvailableException(lease.vehicleId)        
         else:
             query = "INSERT INTO [lease] ([customerID],[vehicleID],[startDate],[endDate],[type]) VALUES (?,?,?,?,?)"
             values = (lease.customerId, lease.vehicleId, lease.startDate, lease.endDate, lease.type)

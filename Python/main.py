@@ -132,6 +132,7 @@ class Main:
                             print()
                             car = Vehicle()
                             car.id = int(input("Enter Car ID: "))
+                            result = self.rentalService.findCarByID(car.id)
                         except ValueError as e:
                             print()
                             print(f"Invalid input: {e}")
@@ -139,7 +140,6 @@ class Main:
                             print()
                             print(f"No Records Found: {e}")
                         else:
-                            result = self.rentalService.findCarByID(car.id)
                             table = tabulate(result, headers="firstrow", tablefmt="fancy_grid")
                             print(table)
 
@@ -168,6 +168,8 @@ class Main:
                         except ValueError as e:
                             print()
                             print(f"Invalid input: {e}")
+                        except pyodbc.IntegrityError as e:
+                            print(f"Customer with email {customer.email} and phone number {customer.phoneNumber} already exists")
                         except Exception as e:
                             print()
                             print(f"An error occurred while inserting in database: {e}")
@@ -184,15 +186,13 @@ class Main:
                             print("Customer Removal")
                             print()
                             customer.id = int(input("Enter Customer ID: "))
-                            if self.rentalService.findCustomerByID(customer.id) == []:
-                                raise CustomerNotFoundException("Customer not found")
                             self.rentalService.removeCustomer(customer.id)
                         except ValueError as e:
                             print()
-                            print(f"Invalid input: {e}")
+                            print(f"INVALID INPUT: {e}")
                         except Exception as e:
                             print()
-                            print(f"No Records Found: {e}")
+                            print(f"UNABLE TO DELETE: {e}")
                         else:
                             print()
                             print(
@@ -201,7 +201,7 @@ class Main:
 
                     # List customers
                     elif option == 3:
-                        result = I.CustomerManagement().listCustomers()
+                        result = self.rentalService.listCustomers()
                         table = tabulate(result, headers="firstrow", tablefmt="fancy_grid")
                         print(table)
 
@@ -217,11 +217,8 @@ class Main:
                             print()
                             print(f"Invalid input: {e}")
                         except Exception as e:
-                            try:
-                                raise CustomerNotFoundException(customer.id)
-                            except CustomerNotFoundException as e:
-                                print()
-                                print(f"No Records Found: {e}")
+                            print()
+                            print(f"NO MATCH FOUND: {e}")
                         else:
                             table = tabulate(result, headers="firstrow", tablefmt="fancy_grid")
                             print(table)
@@ -247,24 +244,14 @@ class Main:
                             lease.vehicleId = int(input("Enter Vehicle ID: "))
                             lease.startDate = input("Enter Start Date: ")
                             lease.type = input("Enter Lease Type: ")
-
-                            # Check if car and customer exists
-                            if self.rentalService.findCarByID(lease.vehicleId) == []:
-                                raise CarNotFoundException(lease.vehicleId)
-
-                            if (
-                                self.rentalService.findCustomerByID(lease.customerId)
-                                == []
-                            ):
-                                raise CustomerNotFoundException(lease.customerId)
-
                             self.rentalService.createLease(lease)
+
                         except ValueError as e:
                             print()
-                            print(f"Invalid input: {e}")
+                            print(f"INVALID INPUT: {e}")
                         except Exception as e:
                             print()
-                            print(f"An error occurred while inserting in database: {e}")
+                            print(f"UNABLE TO CREATE LEASE: {e}")
                         else:
                             print()
                             print(f"Lease details: {lease} - Lease Created Successfully")
@@ -277,18 +264,13 @@ class Main:
                             print()
                             lease.id = int(input("Enter Lease ID: "))
                             lease.endDate = str(datetime.now().date())
-
-                            # Check if lease exists
-                            if self.rentalService.findLeaseByID(lease.id) == []:
-                                raise LeaseNotFoundException(lease.id)
-
                             self.rentalService.returnCar(lease.id)
                         except ValueError as e:
                             print()
-                            print(f"Invalid input: {e}")
+                            print(f"INVALID INPUT: {e}")
                         except Exception as e:
                             print()
-                            print(f"No Records Found: {e}")
+                            print(f"UNABLE TO RETURN CAR: {e}")
                         else:
                             print()
                             print(f"Lease-ID: {lease.id} - Car Returned Successfully")
@@ -326,13 +308,10 @@ class Main:
                             self.rentalService.recordPayment(payment)
                         except ValueError as e:
                             print()
-                            print(f"Invalid input: {e}")
-                        except pyodbc.IntegrityError as e:
-                            try:
-                                raise LeaseNotFoundException(payment.leaseId)
-                            except LeaseNotFoundException as e:
-                                print()
-                                print(e)
+                            print(f"INVALID INPUT: {e}")
+                        except Exception as e:
+                            print()
+                            print(f"PAYMENT FAILED: {e}")
                         else:
                             print(
                                 f"Payment details: {payment} - Payment Recorded Successfully"
