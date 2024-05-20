@@ -24,7 +24,7 @@ class TestingCustomerService(unittest.TestCase):
 
         self.lease = Lease()
         self.lease.customerId = 11
-        self.lease.vehicleId = 2
+        self.lease.vehicleId = 4
         self.lease.startDate = '2024-05-01'
         self.lease.type = 'Daily'
 
