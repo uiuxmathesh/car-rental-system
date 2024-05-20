@@ -85,7 +85,7 @@ class Vehicle:
     
     @passengerCapacity.setter
     def passengerCapacity(self,passesngerCapacity):
-        if passesngerCapacity > 4:
+        if passesngerCapacity >= 4:
             self._passengerCapacity = passesngerCapacity
         else:
             raise ValueError("Passenger capacity should be greater than 4")

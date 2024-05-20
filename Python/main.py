@@ -166,7 +166,7 @@ class Main:
                             customer.firstname = input("Enter Customer First Name: ")
                             customer.lastname = input("Enter Customer Last Name: ")
                             customer.email = input("Enter Customer Email: ")
-                            customer.phone = input("Enter Customer Phone: ")
+                            customer.phoneNumber = input("Enter Customer Phone: ")
                             self.rentalService.addCustomer(customer)
                         except ValueError as e:
                             print()

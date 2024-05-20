@@ -145,7 +145,7 @@ class ICarLeaseRepositoryImpl(ICarLeaseRepository):
         return result
     
     def listLeaseHistory(self) -> list:
-        query = "SELECT * FROM [lease] WHERE [endDate] IS NOT NULL"
+        query = "SELECT * FROM [lease]"
         self._cursor.execute(query)
         result = self._cursor.fetchall()
         header = tuple([column[0] for column in self._cursor.description])
@@ -165,15 +165,28 @@ class ICarLeaseRepositoryImpl(ICarLeaseRepository):
     # Payment Management
 
     def recordPayment(self, payment:Payment) -> None:
-        try:
-            self.findLeaseByID(payment.leaseId)
-        except LeaseNotFoundException as e:
-            print(e)
-        else:
-            query = "INSERT INTO [payment] ([leaseID],[amount],[paymentdate]) VALUES (?,?,?)"
-            values = (payment.leaseId, payment.amount, payment.paymentDate)
-            self._cursor.execute(query, values)
-            self._db_connection.commit()
-            query = "SELECT IDENT_CURRENT('payment') AS [id]"
-            self._cursor.execute(query)
-            payment.id = int(self._cursor.fetchone()[0])
+        
+        leaseresult = self.findLeaseByID(payment.leaseId)
+        if leaseresult[1][4] is not None:
+            raise ValueError("Lease is already returned")
+        leaseType = leaseresult[1][5]
+        vehicleId = leaseresult[1][1]
+        vehicleresult = self.findCarByID(vehicleId)
+        dailyRate = vehicleresult[1][4]
+        startDate = datetime.strptime(leaseresult[1][3], '%Y-%m-%d')
+        endDate = datetime.strptime(payment.paymentDate, '%Y-%m-%d')
+        noOfDay = (endDate - startDate).days
+        if noOfDay == 0:
+            noOfDay = 1
+        amount = dailyRate * noOfDay
+        if amount < payment.amount:
+            raise Exception(f"Amount paid is more than the lease amount! Your current due is {amount}")
+        elif amount > payment.amount:
+            raise Exception(f"Amount paid is less than the lease amount! Make sure the amount is correct. Your current due is {amount}")
+        query = "INSERT INTO [payment] ([leaseID],[amount],[paymentdate]) VALUES (?,?,?)"
+        values = (payment.leaseId, payment.amount, payment.paymentDate)
+        self._cursor.execute(query, values)
+        self._db_connection.commit()
+        query = "SELECT IDENT_CURRENT('payment') AS [id]"
+        self._cursor.execute(query)
+        payment.id = int(self._cursor.fetchone()[0])
